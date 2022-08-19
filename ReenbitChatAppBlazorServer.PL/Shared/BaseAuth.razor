@@ -1,0 +1,18 @@
+﻿@using System.Net
+@inject NavigationManager NavManager
+@inject ITokenHelper tokenHelper
+
+@code {
+    public async void UserAccessCheck(HttpResponseMessage response, Action action)
+    {
+        if(response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden)
+        {
+            await tokenHelper.RemoveTokenAsync();
+            NavManager.NavigateTo("/");
+        }
+        else
+        {
+            action.Invoke();
+        }
+    }
+}

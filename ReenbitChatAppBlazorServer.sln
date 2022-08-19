@@ -2,9 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReenbitChatAppBlazorServer.PL", "ReenbitChatAppBlazorServer.PL\ReenbitChatAppBlazorServer.PL.csproj", "{CEB97BB0-D45D-4A05-8999-30E9000D766F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReenbitChatAppBlazorServer.DB", "ReenbitChatAppBlazorServer.DB\ReenbitChatAppBlazorServer.DB.csproj", "{6E50B6E7-0A57-4474-B220-8AD39B00C259}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReenbitChatAppBlazorServer.DAL", "ReenbitChatAppBlazorServer.DAL\ReenbitChatAppBlazorServer.DAL.csproj", "{6E50B6E7-0A57-4474-B220-8AD39B00C259}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReenbitChatAppBlazorServer.Domain", "ReenbitChatAppBlazorServer.Domain\ReenbitChatAppBlazorServer.Domain.csproj", "{3ED22BCA-ECDA-46AD-A57D-49C1CE2EB250}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReenbitChatAppBlazorServer.BLL", "ReenbitChatAppBlazorServer.BLL\ReenbitChatAppBlazorServer.BLL.csproj", "{00D8C68A-9F07-4772-885C-F9A9835E2B8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +26,9 @@ Global
 		{3ED22BCA-ECDA-46AD-A57D-49C1CE2EB250}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3ED22BCA-ECDA-46AD-A57D-49C1CE2EB250}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3ED22BCA-ECDA-46AD-A57D-49C1CE2EB250}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00D8C68A-9F07-4772-885C-F9A9835E2B8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00D8C68A-9F07-4772-885C-F9A9835E2B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00D8C68A-9F07-4772-885C-F9A9835E2B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00D8C68A-9F07-4772-885C-F9A9835E2B8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

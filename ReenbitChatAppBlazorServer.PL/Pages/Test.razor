@@ -1,16 +1,22 @@
 ﻿@inherits BaseAuth
-@page "/"
+@page "/test"
 
-@inject NavigationManager _navigationManager
 @inject RequestHelper _requestHelper
 
-<PageTitle>Greetings</PageTitle>
+<PageTitle>Test</PageTitle>
 
-<h1>Welcome to Chat!</h1>
-<br/>
-<strong>Registrate or login to chat with all world</strong>
+@if (_status is AuthStatus.NotSet)
+{
+    <LoadingComponent />
+}
 
-@code{
+@if (_status is AuthStatus.Authed)
+{
+    
+}
+
+@code {
+    AuthStatus _status = AuthStatus.NotSet;
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -18,7 +24,8 @@
         {
             UserAccessCheck(await _requestHelper.GetAuthAsync("Test/"), () =>
             {
-                _navigationManager.NavigateTo("/home");
+                _status = AuthStatus.Authed;
+                StateHasChanged();
             });
         }
     }

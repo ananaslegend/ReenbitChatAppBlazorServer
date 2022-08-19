@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.8" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
         <PrivateAssets>all</PrivateAssets>
@@ -20,7 +22,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ReenbitChatAppBlazorServer.DB\ReenbitChatAppBlazorServer.DB.csproj" />
+      <ProjectReference Include="..\ReenbitChatAppBlazorServer.BLL\ReenbitChatAppBlazorServer.BLL.csproj" />
+      <ProjectReference Include="..\ReenbitChatAppBlazorServer.DAL\ReenbitChatAppBlazorServer.DAL.csproj" />
     </ItemGroup>
 
 </Project>

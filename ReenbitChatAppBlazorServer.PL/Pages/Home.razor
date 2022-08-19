@@ -1,0 +1,35 @@
+﻿@inherits BaseAuth
+@page "/home"
+
+@inject NavigationManager NavigationManager
+@inject RequestHelper RequestHelper
+
+<PageTitle>Home</PageTitle>
+
+@if (_status is AuthStatus.NotSet)
+{
+    <LoadingComponent />
+}
+
+@if (_status is AuthStatus.Authed)
+{
+    <h1>Welcome to Chat!</h1>
+    <br/>
+    <strong>This chat app was made like a test pet project by <a href="https://www.linkedin.com/in/daniil-khutorianskyi-2a20b2223/">Khotrianskyi Daniil</a></strong>
+}
+
+@code {
+    AuthStatus _status = AuthStatus.NotSet;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            UserAccessCheck(await RequestHelper.GetAuthAsync("Test/"), () =>
+            {
+                _status = AuthStatus.Authed;
+                StateHasChanged();
+            });
+        }
+    }
+}
