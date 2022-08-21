@@ -34,17 +34,17 @@ public class ChatService
                 case ChatState.Public:
                     newChat.Type = ChatType.PublicChat;
                     break;
-
                 default:
-                    var user = _userManager.Users.FirstOrDefault(x => x.UserName == chatModel.UserName);
-                    newChat.ChatUsers.Add(user);
-
-
-                    _dbUnit.Chats.Add(newChat);
-
-                    await _dbUnit.CompleteAsync();
-                    break;
+                    throw new ArgumentOutOfRangeException();
             }
+
+            var user = _userManager.Users.FirstOrDefault(x => x.UserName == chatModel.UserName);
+            newChat.ChatUsers.Add(user);
+
+            _dbUnit.Chats.Add(newChat);
+
+            await _dbUnit.CompleteAsync();
+
 
             return true;
         }

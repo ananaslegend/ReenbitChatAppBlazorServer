@@ -5,12 +5,12 @@
 
 <PageTitle>Create</PageTitle>
 
-@if (_status is AuthState.NotSet)
+@if (_status == AuthState.NotSet)
 {
     <LoadingComponent />
 }
 
-@if (_status is AuthState.Authed)
+@if (_status == AuthState.Authed)
 {
     <div>
         <button class="btn btn-primary" @onclick="Private" style="margin-right: 20px">Private</button>
@@ -18,11 +18,11 @@
     </div>
     <br />
 
-    @if(_state is ChatState.Private)
+    @if(_state == ChatState.Private)
     {
         <CreatePrivateChat />
     }
-    @if(_state is ChatState.Public)
+    @if(_state == ChatState.Public)
     {
         <CreatePublicChat />
     }

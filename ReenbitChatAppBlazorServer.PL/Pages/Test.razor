@@ -5,12 +5,12 @@
 
 <PageTitle>Test</PageTitle>
 
-@if (_status is AuthState.NotSet)
+@if (_status == AuthState.NotSet)
 {
     <LoadingComponent />
 }
 
-@if (_status is AuthState.Authed)
+@if (_status == AuthState.Authed)
 {
     
 }

@@ -45,8 +45,8 @@ internal class LocalStorageHandler : ILocalStorageHandler
 
     public async Task<AuthState> AuthCheckAsync()
     {
-        return (await _localStorage.GetItemAsStringAsync("authToken") is not null
-                & await _localStorage.GetItemAsStringAsync("UserName") is not null)
+        return (await _localStorage.GetItemAsStringAsync("authToken") != null
+                & await _localStorage.GetItemAsStringAsync("UserName") != null)
             ? AuthState.Authed
             : AuthState.NotAuthed;
     }

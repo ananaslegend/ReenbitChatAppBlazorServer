@@ -28,7 +28,7 @@ internal class ChatRepository : GenericRepository<Chat>, IChatRepository
         var chat = ApplicationContext.Chats
             .Include(u => u.ChatUsers)
             .FirstOrDefault(c => c.Id == chatId); //todo
-        if (chat is null)
+        if (chat == null)
         {
             throw new Exception("User not found");
         }
