@@ -2,7 +2,7 @@
 @page "/"
 
 @inject NavigationManager _navigationManager
-@inject RequestHelper _requestHelper
+@inject RequestHandler _requestHelper
 
 <PageTitle>Greetings</PageTitle>
 
@@ -16,7 +16,7 @@
     {
         if (firstRender)
         {
-            UserAccessCheck(await _requestHelper.GetAuthAsync("Test/"), () =>
+            UserAccessVerification(await _requestHelper.GetAuthAsync("Test/"), () =>
             {
                 _navigationManager.NavigateTo("/home");
             });

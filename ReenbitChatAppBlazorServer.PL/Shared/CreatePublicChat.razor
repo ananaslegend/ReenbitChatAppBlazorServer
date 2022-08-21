@@ -1,0 +1,31 @@
+﻿@inject RequestHandler chatClient
+@inject ILocalStorageService localStorage
+
+<h4>Create Public Chat</h4>
+<br />
+<EditForm Model="chat" OnSubmit="CreateChat">
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label for="name"><h5>Chat Name:</h5></label><br/>
+        <InputText id="name" class="form-controll" @bind-Value="chat.ChatName" />
+        <button class="btn btn-primary mx-2" type="submit">Create</button>
+    </div>
+</EditForm>
+
+@code 
+{
+    CreateChatDTO chat = new();
+
+    private async void CreateChat()
+    {
+        chat.Type = ChatState.Public;
+        var response = await chatClient.CreateChat(chat);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var userName = await localStorage.GetItemAsStringAsync("UserName");
+        userName = userName.Trim('"');
+
+        chat.UserName = userName;
+    }
+}

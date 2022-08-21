@@ -1,6 +1,6 @@
 ﻿namespace ReenbitChatAppBlazorServer.PL.Helpers.Intrefaces;
 
-public interface ITokenHelper
+public interface ITokenHandler
 {
     public Task<string?> GetTokenAsync();
     

@@ -21,13 +21,13 @@ public static class CompositionRoot
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
         builder.Services.AddBlazoredLocalStorage();
-        builder.Services.AddTransient<ITokenHelper, TokenHelper>();
+        builder.Services.AddTransient<ILocalStorageHandler, LocalStorageHandler>();
         builder.Services.AddHttpClient("BaseClient", client =>
         {
             client.BaseAddress = new Uri(builder.Configuration["Url:BaseUrl"]);
         });
 
-        builder.Services.AddTransient<RequestHelper>();
+        builder.Services.AddTransient<RequestHandler>();
         
         builder.Services.AddControllers();
 
@@ -47,6 +47,7 @@ public static class CompositionRoot
         
         builder.Services.AddScoped<IAuthJwtService, AuthJwtService>();
         builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddTransient<ChatService>();
         
         builder.Services.AddAuthorization()
             .AddAuthentication(opt =>
@@ -68,7 +69,7 @@ public static class CompositionRoot
                         Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
                 };
             });
-        
+
         return builder;
     }
 }

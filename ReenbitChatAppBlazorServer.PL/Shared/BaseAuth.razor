@@ -1,13 +1,13 @@
 ﻿@using System.Net
 @inject NavigationManager NavManager
-@inject ITokenHelper tokenHelper
+@inject ILocalStorageHandler LocalStorageHelper
 
 @code {
-    public async void UserAccessCheck(HttpResponseMessage response, Action action)
+    protected async void UserAccessVerification(HttpResponseMessage response, Action action)
     {
         if(response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden)
         {
-            await tokenHelper.RemoveTokenAsync();
+            await LocalStorageHelper.RemoveTokenAsync();
             NavManager.NavigateTo("/");
         }
         else

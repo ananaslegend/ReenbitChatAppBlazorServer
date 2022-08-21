@@ -1,4 +1,6 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@inject ILocalStorageHandler LocalStorageHandler
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/home">ChatApp</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -9,18 +11,72 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/home" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
+        @if (_authState is AuthState.NotAuthed)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="login">
+                    <span class="oi oi-account-login" aria-hidden="true"></span> Log in
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="registration">
+                    <span class="oi oi-pencil" aria-hidden="true"></span> Registration
+                </NavLink>
+            </div>
+        }
+        @if (_authState is AuthState.Authed)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/home">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="create-chat">
+                    <span class="oi oi-plus" aria-hidden="true"></span> Create new chat
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="search-chat">
+                    <span class="oi oi-magnifying-glass" aria-hidden="true"></span> Search chat
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="chats">
+                    <span class="oi oi-list" aria-hidden="true"></span> Chats List
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="login" @onclick="LogOut">
+                    <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
 
 @code {
     private bool collapseNavMenu = true;
-
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    AuthState _authState = AuthState.NotSet;
+
+    private async void LogOut()
+    {
+        _authState = AuthState.NotAuthed;
+        await LocalStorageHandler.LogoutAsync();
+        StateHasChanged();
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        _authState = await LocalStorageHandler.AuthCheckAsync();
+        StateHasChanged();
+    }
 
     private void ToggleNavMenu()
     {

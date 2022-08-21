@@ -1,0 +1,57 @@
+﻿@inherits BaseAuth
+@page "/create-chat"
+
+@inject RequestHandler _requestHelper
+
+<PageTitle>Create</PageTitle>
+
+@if (_status is AuthState.NotSet)
+{
+    <LoadingComponent />
+}
+
+@if (_status is AuthState.Authed)
+{
+    <div>
+        <button class="btn btn-primary" @onclick="Private" style="margin-right: 20px">Private</button>
+        <button class="btn btn-primary" @onclick="Public" style="margin-right: 20px">Public</button>
+    </div>
+    <br />
+
+    @if(_state is ChatState.Private)
+    {
+        <CreatePrivateChat />
+    }
+    @if(_state is ChatState.Public)
+    {
+        <CreatePublicChat />
+    }
+}
+
+@code {
+    AuthState _status = AuthState.NotSet;
+    ChatState _state;
+    
+    private async void Private()
+    {
+        _state = ChatState.Private;
+        StateHasChanged();
+    }
+    private async void Public()
+    {
+        _state = ChatState.Public;
+        StateHasChanged();
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            UserAccessVerification(await _requestHelper.GetAuthAsync("Test/"), () =>
+            {
+                _status = AuthState.Authed;
+                StateHasChanged();
+            });
+        }
+    }
+}

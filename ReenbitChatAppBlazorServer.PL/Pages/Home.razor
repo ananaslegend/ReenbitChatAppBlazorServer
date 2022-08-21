@@ -2,16 +2,16 @@
 @page "/home"
 
 @inject NavigationManager NavigationManager
-@inject RequestHelper RequestHelper
+@inject RequestHandler RequestHelper
 
 <PageTitle>Home</PageTitle>
 
-@if (_status is AuthStatus.NotSet)
+@if (_status is AuthState.NotSet)
 {
     <LoadingComponent />
 }
 
-@if (_status is AuthStatus.Authed)
+@if (_status is AuthState.Authed)
 {
     <h1>Welcome to Chat!</h1>
     <br/>
@@ -19,15 +19,15 @@
 }
 
 @code {
-    AuthStatus _status = AuthStatus.NotSet;
+    AuthState _status = AuthState.NotSet;
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            UserAccessCheck(await RequestHelper.GetAuthAsync("Test/"), () =>
+            UserAccessVerification(await RequestHelper.GetAuthAsync("Test/"), () =>
             {
-                _status = AuthStatus.Authed;
+                _status = AuthState.Authed;
                 StateHasChanged();
             });
         }

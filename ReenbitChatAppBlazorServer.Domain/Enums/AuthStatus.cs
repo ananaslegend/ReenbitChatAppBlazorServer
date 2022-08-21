@@ -1,6 +1,6 @@
 ﻿namespace ReenbitChatAppBlazorServer.Domain.Enums;
 
-public enum AuthStatus
+public enum AuthState
 {
     NotSet,
     Authed,

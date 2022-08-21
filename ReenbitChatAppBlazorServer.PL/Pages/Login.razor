@@ -1,9 +1,8 @@
 ﻿@page "/login"
 
 @inject NavigationManager NavManager
-@inject IHttpClientFactory _httpClientFactory
-@inject ILocalStorageService localStorage
-@inject ITokenHelper tokenHelper
+@inject IHttpClientFactory HttpClientFactory
+@inject ILocalStorageHandler LocalStorageHelper
 
 <h3>Log in, please</h3>
 
@@ -33,17 +32,18 @@
     private async void HandleLogin()
     {
 
-        var client = _httpClientFactory.CreateClient("BaseClient");
+        var client = HttpClientFactory.CreateClient("BaseClient");
         var response = await client.PostAsJsonAsync("Login/login", user);
 
         if (!response.IsSuccessStatusCode)
         {
             invalidLogin = true;
             StateHasChanged();
+            return;
         }
+
+        await LocalStorageHelper.LoginAsync(response, user.UserName);
         
-        await localStorage.SetItemAsync<string>("UserName", user.UserName);
-        await tokenHelper.WriteTokenAsync(response);
         NavManager.NavigateTo("/", forceLoad: true);
     }
 }

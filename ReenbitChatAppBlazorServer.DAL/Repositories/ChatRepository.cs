@@ -15,19 +15,19 @@ internal class ChatRepository : GenericRepository<Chat>, IChatRepository
 
     public IEnumerable<Chat> GetChatsByName(string chatName)
     {
-        return ApplicationContext.Chats.Where(c => c.Name == chatName).AsEnumerable<Chat>();
+        return ApplicationContext.Chats.Where(c => c.Name == chatName).AsEnumerable(); //todo
     }
 
     public IEnumerable<Chat> GetAllUserChats(ApplicationUser user)
     {
-        return ApplicationContext.Chats.Where(u => u.ChatUsers.Contains(user));
+        return ApplicationContext.Chats.Where(u => u.ChatUsers.Contains(user)); //todo
     }
 
     public void AddUserToChat(int chatId, ApplicationUser user)
     {
         var chat = ApplicationContext.Chats
             .Include(u => u.ChatUsers)
-            .FirstOrDefault(c => c.Id == chatId);
+            .FirstOrDefault(c => c.Id == chatId); //todo
         if (chat is null)
         {
             throw new Exception("User not found");
