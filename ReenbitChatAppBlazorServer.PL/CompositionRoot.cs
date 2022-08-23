@@ -9,8 +9,8 @@ using ReenbitChatAppBlazorServer.BLL.Services.Interfaces;
 using ReenbitChatAppBlazorServer.DB;
 using ReenbitChatAppBlazorServer.DB.Interfaces;
 using ReenbitChatAppBlazorServer.Domain.Models;
-using ReenbitChatAppBlazorServer.PL.Helpers;
-using ReenbitChatAppBlazorServer.PL.Helpers.Intrefaces;
+using ReenbitChatAppBlazorServer.PL.Handlers;
+using ReenbitChatAppBlazorServer.PL.Handlers.Intrefaces;
 
 namespace ReenbitChatAppBlazorServer.PL;
 

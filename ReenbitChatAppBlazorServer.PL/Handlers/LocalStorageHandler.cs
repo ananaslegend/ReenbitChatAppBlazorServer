@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using ReenbitChatAppBlazorServer.Domain.Enums;
-using ReenbitChatAppBlazorServer.PL.Helpers.Intrefaces;
+using ReenbitChatAppBlazorServer.PL.Handlers.Intrefaces;
 
-namespace ReenbitChatAppBlazorServer.PL.Helpers;
+namespace ReenbitChatAppBlazorServer.PL.Handlers;
 internal class LocalStorageHandler : ILocalStorageHandler
 {
     private readonly ILocalStorageService _localStorage;

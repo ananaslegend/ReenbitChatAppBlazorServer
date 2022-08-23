@@ -1,11 +1,10 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
-using ReenbitChatAppBlazorServer.Domain.Enums;
-using ReenbitChatAppBlazorServer.PL.Helpers.Intrefaces;
+using ReenbitChatAppBlazorServer.PL.Handlers.Intrefaces;
 using ReenbitChatAppBlazorServer.PL.Models;
 
-namespace ReenbitChatAppBlazorServer.PL.Helpers;
+namespace ReenbitChatAppBlazorServer.PL.Handlers;
 
 public class RequestHandler
 {
