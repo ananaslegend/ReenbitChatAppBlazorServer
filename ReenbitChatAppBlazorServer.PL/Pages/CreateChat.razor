@@ -1,7 +1,7 @@
 ﻿@inherits BaseAuth
 @page "/create-chat"
 
-@inject RequestHandler _requestHelper
+@inject RequestHandler RequestHelper
 
 <PageTitle>Create</PageTitle>
 
@@ -47,7 +47,7 @@
     {
         if (firstRender)
         {
-            UserAccessVerification(await _requestHelper.GetAuthAsync("Login/GetAuthorize/"), () =>
+            UserAccessVerification(await RequestHelper.GetAuthAsync("Login/GetAuthorize/"), () =>
             {
                 _status = AuthState.Authed;
                 StateHasChanged();

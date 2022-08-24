@@ -49,6 +49,7 @@ public static class CompositionRoot
         
         builder.Services.AddScoped<IAuthJwtService, AuthJwtService>();
         builder.Services.AddTransient<IChatService, ChatService>();
+        builder.Services.AddTransient<IMessageService, MessageService>();
         
         builder.Services.AddAuthorization()
             .AddAuthentication(opt =>
@@ -70,6 +71,8 @@ public static class CompositionRoot
                         Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
                 };
             });
+        
+        builder.Services.AddSignalR();
         
         builder.Services.AddResponseCompression(opt =>
         {

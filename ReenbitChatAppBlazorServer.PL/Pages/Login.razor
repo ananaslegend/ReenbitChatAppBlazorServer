@@ -8,42 +8,42 @@
 
 <h3>Log in, please</h3>
 
-<EditForm Model="user" OnSubmit="HandleLogin">
+<EditForm Model="_user" OnSubmit="HandleLogin">
     <div class="form-group" style="padding-bottom: 20px;">
         <label for="login">Your Login</label>
-        <InputText id="login" class="form-controll" @bind-Value="user.UserName"/>
+        <InputText id="login" class="form-controll" @bind-Value="_user.UserName"/>
     </div>
     <div class="form-group" style="padding-bottom: 20px;">
         <label for="password">Password</label>
-        <InputText id="password" class="form-controll" @bind-Value="user.Password" type="password"/>
+        <InputText id="password" class="form-controll" @bind-Value="_user.Password" type="password"/>
     </div>
 
     <button class="btn btn-primary" type="submit">Login</button>
 </EditForm>
 
-@if (invalidLogin)
+@if (_invalidLogin)
 {
     <br/><strong>Invalid data</strong>
 }
 
 @code
 {
-    private LoginDTO user = new();
-    private bool invalidLogin;
+    private LoginDTO _user = new();
+    private bool _invalidLogin;
 
     private async void HandleLogin()
     {
         var client = HttpClientFactory.CreateClient("BaseClient");
-        var response = await client.PostAsJsonAsync("Login/login", user);
+        var response = await client.PostAsJsonAsync("Login/login", _user);
 
         if (!response.IsSuccessStatusCode)
         {
-            invalidLogin = true;
+            _invalidLogin = true;
             StateHasChanged();
             return;
         }
 
-        await LocalStorageHelper.LoginAsync(response, user.UserName);
+        await LocalStorageHelper.LoginAsync(response, _user.UserName);
         
         NavManager.NavigateTo("/", forceLoad: true);
     }

@@ -26,9 +26,9 @@ internal class MessageRepository : GenericRepository<Message>, IMessageRepositor
         return list;
     }
 
-    public Task<Message> GetMessageById(int Id)
+    public async Task<Message> GetMessageByIdAsync(int Id)
     {
-        return ApplicationContext.Messages
+        return await ApplicationContext.Messages
             .Include(a => a.Author)
             .Include(r => r.Reply)
             .Include(c => c.Chat)

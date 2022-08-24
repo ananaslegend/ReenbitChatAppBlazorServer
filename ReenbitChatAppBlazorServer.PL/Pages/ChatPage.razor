@@ -1,0 +1,224 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+@inherits BaseAuth
+@page "/chat/{ChatId:int}"
+
+@inject RequestHandler RequestHelper
+@inject NavigationManager NavigationManager
+@inject ILocalStorageHandler LocalStorageHandler
+
+<PageTitle>Chating!</PageTitle>
+
+@if (_status == AuthState.NotSet)
+{
+    <LoadingComponent />
+}
+
+@if (_status == AuthState.Authed)
+{
+    <div class="container overflow-auto shadow-sm p-3 mb-5 bg-white rounded" style="height: 750px;">
+        @if(!_messages.Any())
+        {
+            <p>No messages yet</p>
+        }
+        <button class="btn btn-outline-primary mb-3" @onclick="GetOlderMessages">
+            <span class="oi oi-clock"></span>
+        </button>
+        @foreach (var item in _messages)
+        {
+            <div class="mb-3 d-flex">
+                <div class="card shadow" style="width: 18rem;">
+                    <div class="card-header">
+                        @item.AuthorName
+                        @if(item.ReplyAuthorName != null)
+                        {
+                            <p>Replyed to @item.ReplyAuthorName</p>
+                        }
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">@item.Data</li>
+                    </ul>
+                    <div class="card-footer">
+                        <span class="small">@item.Date.ToString("HH:mm | MMM dd")</span>
+                        @if(string.Equals(item.AuthorName, _userName, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            <button class="btn" @onclick="() => ChangeMessageModeToUpdate(item)">
+                                <span class="oi oi-pencil small "></span>
+                            </button>
+                        }
+                        <button class="btn" @onclick="() => Delete(item)">
+                            <span class="oi oi-trash small"></span>
+                        </button>
+                        <button class="btn" @onclick="() => ChangeMessageModeToReply(item)">
+                            <span class="oi oi-share small "></span>
+                        </button>
+                    </div>
+                </div> 
+            </div>
+        }
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-9">
+                <textarea @bind="_msgInput" class="form-control" placeholder="Ur msg..."></textarea>
+            </div>
+            <div class="col-3">
+                @if(_messageMode == "update")
+                {
+                    <button class="btn btn-primary" type="button" @onclick="Update">Update</button>
+                }
+                @if(_messageMode == "reply")
+                {
+                    <button class="btn btn-primary" type="button" @onclick="Reply">Reply</button>
+                }
+                @if(_messageMode == "send")
+                {
+                    <button class="btn btn-primary" type="button" @onclick="Send">Send</button>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    AuthState _status = AuthState.NotSet;
+    
+    [Parameter]
+    public int ChatId { get; set; }
+    List<MessageDTO> _messages = new();
+    MessageDTO? _replyingMessage = null;
+    MessageDTO? _updatingingMessage = null;
+    private HubConnection? _hubConnection;
+    string _messageMode = "send";
+    int _batch = 20;
+    int _loaded = 0;
+    string _msgInput = string.Empty;
+    string _userName = string.Empty;
+    
+    private void ChangeMessageModeToReply(MessageDTO message)
+    {
+        _replyingMessage = message;
+        _messageMode = "reply";
+        StateHasChanged();
+    }
+    private void ChangeMessageModeToUpdate(MessageDTO message)
+    {
+        _messageMode = "update";
+        _updatingingMessage = message;
+        _msgInput = message.Data;
+        StateHasChanged();
+    }
+    
+    private async Task Send()
+    {
+        if(!string.IsNullOrEmpty(_msgInput))
+        {
+            CreateMessageDTO createMessage = new()
+            {
+                ChatId = Convert.ToInt32(ChatId),
+                MessageText = _msgInput,
+                SenderName = _userName
+            };
+
+            await _hubConnection.InvokeAsync("SendMessage", createMessage);
+
+            _msgInput = string.Empty;
+        }
+    }
+    private async Task Delete(MessageDTO message)
+    {
+        if(message != null)
+        {
+            await _hubConnection.InvokeAsync("RemoveMessage", message);
+        }
+    }
+    private async Task Update()
+    {
+        if(_updatingingMessage != null && !string.IsNullOrEmpty(_msgInput))
+        {
+            _updatingingMessage.Data = _msgInput;
+            await _hubConnection.InvokeAsync("UpdateMessage", _updatingingMessage);
+
+            _msgInput = String.Empty;
+            _messageMode = "send";
+            _updatingingMessage = null;
+        }
+    }
+    private async Task Reply()
+    {
+        if(!string.IsNullOrEmpty(_msgInput))
+        {
+            CreateMessageDTO createMessage = new()
+            {
+                ChatId = Convert.ToInt32(ChatId),
+                MessageText = _msgInput,
+                SenderName = _userName,
+                ReplyId = _replyingMessage.Id  
+            };
+
+            await _hubConnection.InvokeAsync("SendMessage", createMessage);
+
+            _msgInput = string.Empty;
+        }
+        _messageMode = "send";
+        _replyingMessage = null;
+    }
+    private async Task GetOlderMessages()
+    {
+        await _hubConnection.InvokeAsync("GetMassagePack", ChatId, _messages.Count, _batch);
+        StateHasChanged();
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            UserAccessVerification(await RequestHelper.GetAuthAsync("Login/GetAuthorize/"), async () =>
+            {
+                _userName = await LocalStorageHandler.GetUserNameAsync();
+                _status = AuthState.Authed;
+                StateHasChanged();
+
+                _hubConnection = new HubConnectionBuilder()
+                    .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
+                    .Build();
+                
+                _hubConnection.On<IList<MessageDTO>>("AddMessagePack", pack =>
+                {
+                    if (pack is not null)
+                    {
+                        _messages.InsertRange(0, pack);
+                        _loaded += _batch;
+                    }
+                });
+
+                _hubConnection.On<MessageDTO>("AddMessage", newMessage =>
+                {
+                    _messages.Add(newMessage);
+                    _loaded += 1;
+                    StateHasChanged();
+                });
+                
+                
+                _hubConnection.On<int>("ReceiveDeleteMessage", (chatId) =>
+                {
+                    _messages.Remove(_messages.Single(m => m.Id == chatId));
+                    StateHasChanged();
+                });
+                
+                _hubConnection.On<MessageDTO>("ReceiveUpdateMessage", (updateMessage) =>
+                {
+                    var indexMessage = _messages.FindIndex(m => m.Id == updateMessage.Id);
+                    _messages[indexMessage] = updateMessage;
+                
+                    StateHasChanged();
+                });
+                
+
+                await _hubConnection.StartAsync();
+                await _hubConnection.InvokeAsync("JoinRoom", ChatId);
+                await _hubConnection.InvokeAsync("GetMassagePack", ChatId, _loaded, _batch);
+                StateHasChanged();
+            }); 
+        }
+    }
+}

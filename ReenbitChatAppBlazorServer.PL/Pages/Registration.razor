@@ -7,14 +7,14 @@
 
 <h3>Registration!</h3>
 
-<EditForm Model="user" OnSubmit="HandleRegistration">
+<EditForm Model="_user" OnSubmit="HandleRegistration">
     <div class="form-group" style="padding-bottom: 20px;">
         <label for="login">Your Login</label>
-        <InputText id="login" class="form-controll" @bind-Value="user.UserName"/>
+        <InputText id="login" class="form-controll" @bind-Value="_user.UserName"/>
     </div>
     <div class="form-group" style="padding-bottom: 20px;">
         <label for="password">Password</label>
-        <InputText id="password" class="form-controll" @bind-Value="user.Password" type="password"/>
+        <InputText id="password" class="form-controll" @bind-Value="_user.Password" type="password"/>
     </div>
 
     <button class="btn btn-primary" type="submit">Submit</button>
@@ -22,13 +22,13 @@
 
 @code
 {
-    private LoginDTO user = new();
+    private LoginDTO _user = new();
 
     private async void HandleRegistration()
     {
         var client = HttpClientFactory.CreateClient("BaseClient");
 
-        var response = await client.PostAsJsonAsync("Login/registration", user);
+        var response = await client.PostAsJsonAsync("Login/registration", _user);
 
         if(response.IsSuccessStatusCode)
         {

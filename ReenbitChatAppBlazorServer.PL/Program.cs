@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using ReenbitChatAppBlazorServer.PL;
+using ReenbitChatAppBlazorServer.PL.Hubs;
 
 var builder = CompositionRoot.AddServices(
         WebApplication.CreateBuilder(args));
@@ -22,6 +23,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chatHub");
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
