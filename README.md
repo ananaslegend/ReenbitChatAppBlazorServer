@@ -11,7 +11,7 @@ Simply Online chat app based on:
 - JWT Authorization
 
 ------------
-UA, Kyiv
-dkhutorianskyi@gmail.com
-+380 (63) 788-83-90
+UA, Kyiv |
+dkhutorianskyi@gmail.com |
++380 (63) 788-83-90 |
 https://www.linkedin.com/in/daniil-khutorianskyi-2a20b2223/
