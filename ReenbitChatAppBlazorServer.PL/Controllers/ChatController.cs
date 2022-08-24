@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ReenbitChatAppBlazorServer.BLL.Services;
-using ReenbitChatAppBlazorServer.DB.Interfaces;
+using ReenbitChatAppBlazorServer.BLL.Services.Interfaces;
 using ReenbitChatAppBlazorServer.Domain.DTOs;
-using ReenbitChatAppBlazorServer.Domain.Enums;
-using ReenbitChatAppBlazorServer.Domain.Models;
 using ReenbitChatAppBlazorServer.PL.Models;
 
 namespace Chat_BlazorServer.Controllers
@@ -15,9 +11,9 @@ namespace Chat_BlazorServer.Controllers
     [ApiController]
     public class ChatsController : ControllerBase
     {
-        private readonly ChatService _chatService;
+        private readonly IChatService _chatService;
 
-        public ChatsController(ChatService chatService)
+        public ChatsController(IChatService chatService)
         {
             _chatService = chatService;
         }

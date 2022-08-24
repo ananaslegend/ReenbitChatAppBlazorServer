@@ -1,4 +1,4 @@
-﻿namespace ReenbitChatAppBlazorServer.Domain.Models;
+﻿namespace ReenbitChatAppBlazorServer.DAL.Models;
 
 public class AuthenticationState
 {

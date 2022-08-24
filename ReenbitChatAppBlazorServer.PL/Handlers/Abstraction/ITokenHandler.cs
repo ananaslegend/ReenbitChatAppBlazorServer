@@ -1,4 +1,4 @@
-﻿namespace ReenbitChatAppBlazorServer.PL.Helpers.Intrefaces;
+﻿namespace ReenbitChatAppBlazorServer.PL.Handlers.Intrefaces;
 
 public interface ITokenHandler
 {

@@ -1,6 +1,6 @@
 ﻿using ReenbitChatAppBlazorServer.Domain.Enums;
 
-namespace ReenbitChatAppBlazorServer.Domain.Models;
+namespace ReenbitChatAppBlazorServer.DAL.Models;
 
 public class Chat
 {

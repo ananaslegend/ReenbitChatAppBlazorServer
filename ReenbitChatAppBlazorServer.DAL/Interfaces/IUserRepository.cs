@@ -1,8 +1,8 @@
-﻿using ReenbitChatAppBlazorServer.Domain.Models;
+﻿using ReenbitChatAppBlazorServer.DAL.Models;
 
-namespace ReenbitChatAppBlazorServer.DB.Interfaces;
+namespace ReenbitChatAppBlazorServer.DAL.Interfaces;
 
 public interface IUserRepository : IGenericRepository<ApplicationUser>
 {
-    
+    public Task<ICollection<Chat>> GetUserChats(string userName);
 }

@@ -1,8 +1,10 @@
 ﻿@inherits BaseAuth
 @page "/"
 
-@inject NavigationManager _navigationManager
-@inject RequestHandler _requestHelper
+<PageTitle>Home</PageTitle>
+
+@inject NavigationManager NavigationManager
+@inject RequestHandler RequestHelper
 
 <PageTitle>Greetings</PageTitle>
 
@@ -16,9 +18,9 @@
     {
         if (firstRender)
         {
-            UserAccessVerification(await _requestHelper.GetAuthAsync("Test/"), () =>
+            UserAccessVerification(await RequestHelper.GetAuthAsync("Login/GetAuthorize/"), () =>
             {
-                _navigationManager.NavigateTo("/home");
+                NavigationManager.NavigateTo("/home");
             });
         }
     }

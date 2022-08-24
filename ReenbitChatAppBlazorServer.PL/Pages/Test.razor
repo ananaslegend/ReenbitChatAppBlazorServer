@@ -22,7 +22,7 @@
     {
         if (firstRender)
         {
-            UserAccessVerification(await _requestHelper.GetAuthAsync("Test/"), () =>
+            UserAccessVerification(await _requestHelper.GetAuthAsync("Login/GetAuthorize/"), () =>
             {
                 _status = AuthState.Authed;
                 StateHasChanged();

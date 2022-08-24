@@ -1,6 +1,6 @@
 ﻿using ReenbitChatAppBlazorServer.Domain.Enums;
 
-namespace ReenbitChatAppBlazorServer.PL.Helpers.Intrefaces;
+namespace ReenbitChatAppBlazorServer.PL.Handlers.Intrefaces;
 
 public interface IAuthHandler
 {

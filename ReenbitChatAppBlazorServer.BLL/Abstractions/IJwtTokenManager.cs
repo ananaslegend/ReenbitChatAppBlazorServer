@@ -1,4 +1,4 @@
-﻿using ReenbitChatAppBlazorServer.Domain.Models;
+﻿using ReenbitChatAppBlazorServer.DAL.Models;
 
 namespace ReenbitChatAppBlazorServer.BLL.Abstractions;
 

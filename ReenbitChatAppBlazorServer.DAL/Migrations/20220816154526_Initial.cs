@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ReenbitChatAppBlazorServer.DB.Migrations
+namespace ReenbitChatAppBlazorServer.DAL.Migrations
 {
     public partial class Initial : Migration
     {

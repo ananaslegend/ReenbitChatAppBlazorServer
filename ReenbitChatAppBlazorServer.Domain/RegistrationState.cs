@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace ReenbitChatAppBlazorServer.Domain.Models;
+namespace ReenbitChatAppBlazorServer.Domain;
 
 public class RegistrationState
 {

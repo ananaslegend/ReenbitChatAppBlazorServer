@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using ReenbitChatAppBlazorServer.Domain.Enums;
-using ReenbitChatAppBlazorServer.PL.Helpers.Intrefaces;
+using ReenbitChatAppBlazorServer.PL.Handlers.Intrefaces;
 
-namespace ReenbitChatAppBlazorServer.PL.Helpers;
+namespace ReenbitChatAppBlazorServer.PL.Handlers;
 internal class LocalStorageHandler : ILocalStorageHandler
 {
     private readonly ILocalStorageService _localStorage;
@@ -45,9 +45,14 @@ internal class LocalStorageHandler : ILocalStorageHandler
 
     public async Task<AuthState> AuthCheckAsync()
     {
-        return (await _localStorage.GetItemAsStringAsync("authToken") != null
-                & await _localStorage.GetItemAsStringAsync("UserName") != null)
+        return (await _localStorage.GetItemAsStringAsync("authToken") != null)
             ? AuthState.Authed
             : AuthState.NotAuthed;
+    }
+
+    public async Task<string> GetUserNameAsync()
+    {
+        var authToken = await _localStorage.GetItemAsStringAsync("UserName");
+        return authToken.Trim('"');
     }
 }

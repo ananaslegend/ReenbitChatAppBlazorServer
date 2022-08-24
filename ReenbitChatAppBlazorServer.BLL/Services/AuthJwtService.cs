@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ReenbitChatAppBlazorServer.BLL.Services.Interfaces;
+using ReenbitChatAppBlazorServer.DAL.Models;
+using ReenbitChatAppBlazorServer.Domain;
 using ReenbitChatAppBlazorServer.Domain.DTOs;
-using ReenbitChatAppBlazorServer.Domain.Models;
 
 namespace ReenbitChatAppBlazorServer.BLL.Services;
 

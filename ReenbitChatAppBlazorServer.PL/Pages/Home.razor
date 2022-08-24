@@ -1,7 +1,6 @@
 ﻿@inherits BaseAuth
 @page "/home"
 
-@inject NavigationManager NavigationManager
 @inject RequestHandler RequestHelper
 
 <PageTitle>Home</PageTitle>
@@ -25,7 +24,7 @@
     {
         if (firstRender)
         {
-            UserAccessVerification(await RequestHelper.GetAuthAsync("Test/"), () =>
+            UserAccessVerification(await RequestHelper.GetAuthAsync("Login/GetAuthorize/"), () =>
             {
                 _status = AuthState.Authed;
                 StateHasChanged();

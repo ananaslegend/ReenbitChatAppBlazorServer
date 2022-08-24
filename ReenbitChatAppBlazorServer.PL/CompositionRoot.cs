@@ -2,15 +2,16 @@
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ReenbitChatAppBlazorServer.BLL.Services;
 using ReenbitChatAppBlazorServer.BLL.Services.Interfaces;
-using ReenbitChatAppBlazorServer.DB;
-using ReenbitChatAppBlazorServer.DB.Interfaces;
-using ReenbitChatAppBlazorServer.Domain.Models;
-using ReenbitChatAppBlazorServer.PL.Helpers;
-using ReenbitChatAppBlazorServer.PL.Helpers.Intrefaces;
+using ReenbitChatAppBlazorServer.DAL;
+using ReenbitChatAppBlazorServer.DAL.Interfaces;
+using ReenbitChatAppBlazorServer.DAL.Models;
+using ReenbitChatAppBlazorServer.PL.Handlers;
+using ReenbitChatAppBlazorServer.PL.Handlers.Intrefaces;
 
 namespace ReenbitChatAppBlazorServer.PL;
 
@@ -44,10 +45,10 @@ public static class CompositionRoot
             opt.Password.RequireUppercase = false;
             opt.Password.RequireNonAlphanumeric = false;
         }).AddEntityFrameworkStores<ApplicationContext>();
+        builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
         
         builder.Services.AddScoped<IAuthJwtService, AuthJwtService>();
-        builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-        builder.Services.AddTransient<ChatService>();
+        builder.Services.AddTransient<IChatService, ChatService>();
         
         builder.Services.AddAuthorization()
             .AddAuthentication(opt =>
@@ -69,7 +70,12 @@ public static class CompositionRoot
                         Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
                 };
             });
-
+        
+        builder.Services.AddResponseCompression(opt =>
+        {
+            opt.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
+        });
+        
         return builder;
     }
 }

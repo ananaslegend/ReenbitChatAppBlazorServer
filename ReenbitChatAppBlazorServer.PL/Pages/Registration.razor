@@ -1,11 +1,9 @@
 ﻿@page "/registration"
 
 @inject NavigationManager NavManager
-@inject HttpClient _httpClient
-@inject IHttpClientFactory _httpClientFactory
+@inject IHttpClientFactory HttpClientFactory
 
-@using Microsoft.AspNetCore.Components
-@using ReenbitChatAppBlazorServer.Domain.DTOs
+<PageTitle>Registration</PageTitle>
 
 <h3>Registration!</h3>
 
@@ -28,7 +26,7 @@
 
     private async void HandleRegistration()
     {
-        var client = _httpClientFactory.CreateClient("BaseClient");
+        var client = HttpClientFactory.CreateClient("BaseClient");
 
         var response = await client.PostAsJsonAsync("Login/registration", user);
 

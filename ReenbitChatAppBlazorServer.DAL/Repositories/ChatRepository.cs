@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReenbitChatAppBlazorServer.DB.Interfaces;
-using ReenbitChatAppBlazorServer.Domain.Models;
+using ReenbitChatAppBlazorServer.DAL.Interfaces;
+using ReenbitChatAppBlazorServer.DAL.Models;
 
-namespace ReenbitChatAppBlazorServer.DB.Repositories;
+namespace ReenbitChatAppBlazorServer.DAL.Repositories;
 
 internal class ChatRepository : GenericRepository<Chat>, IChatRepository
 {
@@ -13,7 +13,7 @@ internal class ChatRepository : GenericRepository<Chat>, IChatRepository
     //downcast from generic 
     public ApplicationContext ApplicationContext => _context;
 
-    public IEnumerable<Chat> GetChatsByName(string chatName)
+    public IEnumerable<Chat> GetChatsByName(string? chatName)
     {
         return ApplicationContext.Chats.Where(c => c.Name == chatName).AsEnumerable(); //todo
     }
@@ -28,6 +28,7 @@ internal class ChatRepository : GenericRepository<Chat>, IChatRepository
         var chat = ApplicationContext.Chats
             .Include(u => u.ChatUsers)
             .FirstOrDefault(c => c.Id == chatId); //todo
+        
         if (chat == null)
         {
             throw new Exception("User not found");

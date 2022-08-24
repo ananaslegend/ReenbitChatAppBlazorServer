@@ -1,7 +1,7 @@
-﻿using ReenbitChatAppBlazorServer.DB.Interfaces;
-using ReenbitChatAppBlazorServer.DB.Repositories;
+﻿using ReenbitChatAppBlazorServer.DAL.Interfaces;
+using ReenbitChatAppBlazorServer.DAL.Repositories;
 
-namespace ReenbitChatAppBlazorServer.DB;
+namespace ReenbitChatAppBlazorServer.DAL;
 
 public class UnitOfWork : IUnitOfWork
 {

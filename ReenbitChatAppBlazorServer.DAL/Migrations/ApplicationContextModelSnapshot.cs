@@ -4,11 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ReenbitChatAppBlazorServer.DB;
 
 #nullable disable
 
-namespace ReenbitChatAppBlazorServer.DB.Migrations
+namespace ReenbitChatAppBlazorServer.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot

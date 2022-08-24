@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReenbitChatAppBlazorServer.DB.Interfaces;
-using ReenbitChatAppBlazorServer.Domain.Models;
+using ReenbitChatAppBlazorServer.DAL.Interfaces;
+using ReenbitChatAppBlazorServer.DAL.Models;
 
-namespace ReenbitChatAppBlazorServer.DB.Repositories;
+namespace ReenbitChatAppBlazorServer.DAL.Repositories;
 
 internal class MessageRepository : GenericRepository<Message>, IMessageRepository
 {

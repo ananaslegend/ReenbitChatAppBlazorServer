@@ -32,12 +32,12 @@
     AuthState _status = AuthState.NotSet;
     ChatState _state;
     
-    private async void Private()
+    private void Private()
     {
         _state = ChatState.Private;
         StateHasChanged();
     }
-    private async void Public()
+    private void Public()
     {
         _state = ChatState.Public;
         StateHasChanged();
@@ -47,7 +47,7 @@
     {
         if (firstRender)
         {
-            UserAccessVerification(await _requestHelper.GetAuthAsync("Test/"), () =>
+            UserAccessVerification(await _requestHelper.GetAuthAsync("Login/GetAuthorize/"), () =>
             {
                 _status = AuthState.Authed;
                 StateHasChanged();

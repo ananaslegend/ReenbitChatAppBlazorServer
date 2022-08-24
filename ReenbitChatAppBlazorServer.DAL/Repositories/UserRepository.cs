@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReenbitChatAppBlazorServer.DB.Interfaces;
-using ReenbitChatAppBlazorServer.Domain.Models;
+using ReenbitChatAppBlazorServer.DAL.Interfaces;
+using ReenbitChatAppBlazorServer.DAL.Models;
 
-namespace ReenbitChatAppBlazorServer.DB.Repositories;
+namespace ReenbitChatAppBlazorServer.DAL.Repositories;
 
 internal class UserRepository : GenericRepository<ApplicationUser>, IUserRepository
 {
@@ -19,6 +19,16 @@ internal class UserRepository : GenericRepository<ApplicationUser>, IUserReposit
             .FirstOrDefaultAsync();
 
         return user;
+    }
+
+    public async Task<ICollection<Chat>> GetUserChats(string userName)
+    {
+        var user = await ApplicationContext.Users
+            .Where(u => u.UserName == userName)
+            .Include(c => c.UserChats)
+            .FirstOrDefaultAsync();
+
+        return user.UserChats.ToList();
     }
 
     //downcast from generic 

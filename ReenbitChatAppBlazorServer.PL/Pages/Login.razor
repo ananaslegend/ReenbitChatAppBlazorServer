@@ -4,6 +4,8 @@
 @inject IHttpClientFactory HttpClientFactory
 @inject ILocalStorageHandler LocalStorageHelper
 
+<PageTitle>Log in</PageTitle>
+
 <h3>Log in, please</h3>
 
 <EditForm Model="user" OnSubmit="HandleLogin">
@@ -31,7 +33,6 @@
 
     private async void HandleLogin()
     {
-
         var client = HttpClientFactory.CreateClient("BaseClient");
         var response = await client.PostAsJsonAsync("Login/login", user);
 

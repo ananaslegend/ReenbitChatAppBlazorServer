@@ -1,6 +1,6 @@
-﻿using ReenbitChatAppBlazorServer.Domain.Models;
+﻿using ReenbitChatAppBlazorServer.DAL.Models;
 
-namespace ReenbitChatAppBlazorServer.DB.Interfaces;
+namespace ReenbitChatAppBlazorServer.DAL.Interfaces;
 
 public interface IMessageRepository : IGenericRepository<Message>
 {

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace ReenbitChatAppBlazorServer.DB.Interfaces;
+namespace ReenbitChatAppBlazorServer.DAL.Interfaces;
 
 public interface IGenericRepository<TEntity> where TEntity : class 
 {

@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using ReenbitChatAppBlazorServer.DB.Interfaces;
+using ReenbitChatAppBlazorServer.DAL.Interfaces;
 
-namespace ReenbitChatAppBlazorServer.DB.Repositories;
+namespace ReenbitChatAppBlazorServer.DAL.Repositories;
 
 internal class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity: class
 {

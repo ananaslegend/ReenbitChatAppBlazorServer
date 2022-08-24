@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace ReenbitChatAppBlazorServer.Domain.Models;
+namespace ReenbitChatAppBlazorServer.DAL.Models;
 
 public class ApplicationUser : IdentityUser
 {

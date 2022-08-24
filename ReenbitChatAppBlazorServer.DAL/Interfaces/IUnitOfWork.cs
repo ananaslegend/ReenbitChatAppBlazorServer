@@ -1,4 +1,4 @@
-﻿namespace ReenbitChatAppBlazorServer.DB.Interfaces;
+﻿namespace ReenbitChatAppBlazorServer.DAL.Interfaces;
 
 public interface IUnitOfWork
 {

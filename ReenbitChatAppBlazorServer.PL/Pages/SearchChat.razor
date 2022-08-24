@@ -1,0 +1,85 @@
+﻿@inherits BaseAuth
+@page "/search-chat"
+
+@inject RequestHandler RequestHandler
+@inject NavigationManager NavManager
+@inject ILocalStorageHandler LocalStorageHandler
+
+<PageTitle>Search</PageTitle>
+
+@if (_status == AuthState.NotSet)
+{
+    <LoadingComponent />
+}
+
+@if (_status == AuthState.Authed)
+{
+    <h3>Search chat</h3><br />
+    <EditForm Model="_chatName" OnSubmit="SearchChats">
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="name">Chat name: </label>
+            <InputText id="name" class="form-controll" @bind-Value="_chatName.Name" />
+        </div>
+        <button class="btn btn-primary" type="submit">Search</button>
+    </EditForm>
+
+@if (_chats.Any())
+{
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Chat Name</th>
+            <th>Type</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var chat in _chats)
+        {
+            <tr>
+                <td>@chat.Name</td>
+                <td>@chat.Type</td>
+                <td><button class="btn btn-primary" @onclick="() => JoinChat(chat.Id)">Join</button></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+}
+
+@code {
+    AuthState _status = AuthState.NotSet;
+    NameDTO _chatName = new();
+    string _userName;
+    List<ChatDisplayDTO>? _chats = new();
+
+    private async void SearchChats()
+    {
+        var chatsResponse = await RequestHandler.GetChatsByName(_chatName);
+        
+        _chats = (List<ChatDisplayDTO>) await chatsResponse.Content.ReadFromJsonAsync<IEnumerable<ChatDisplayDTO>>();
+        StateHasChanged();
+    }
+
+    private async void JoinChat(int chatId)
+    {
+        var IsSucessJoin = await RequestHandler.JoinToChat(chatId, await LocalStorageHandler.GetUserNameAsync());
+
+         if(IsSucessJoin)
+         {
+             NavManager.NavigateTo($"/chat/{chatId}");
+         }
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            UserAccessVerification(await RequestHandler.GetAuthAsync("Login/GetAuthorize/"), () =>
+            {
+                _status = AuthState.Authed;
+                StateHasChanged();
+            });
+        }
+    }
+}

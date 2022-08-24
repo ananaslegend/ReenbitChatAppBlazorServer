@@ -1,0 +1,90 @@
+﻿@using ReenbitChatAppBlazorServer.Domain.Responses
+@inherits BaseAuth
+@page "/chats"
+
+@inject RequestHandler RequestHandler
+@inject NavigationManager NavigationManager
+@inject ILocalStorageHandler LocalStorageHandler
+
+<PageTitle>Chats</PageTitle>
+
+@if (_status == AuthState.NotSet)
+{
+    <LoadingComponent />
+}
+
+@if (_status == AuthState.Authed)
+{
+    <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Chat Name</th>
+                    <th>Type</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (_chats != null)
+            {
+                foreach (var chat in _chats)
+                {
+                    <tr>
+                        <td>@chat.Name</td>
+
+                        @if (chat.Type == ChatType.PrivateChat)
+                        {
+                            <td>
+                                Private
+                            </td>
+                        }
+                        @if (chat.Type == ChatType.PublicChat)
+                        {
+                            <td>
+                                Public
+                            </td>
+                        }
+                        <td>
+                            <button class="btn btn-primary" @onclick="@(() => EnterChat(chat.Id))">Enter</button>
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+}
+
+@code {
+    AuthState _status = AuthState.NotSet;
+    List<ChatDisplayDTO>? _chats;
+    
+    private void EnterChat(int chatId)
+    {
+        NavigationManager.NavigateTo($"/chat/{chatId}");
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var userName = new NameDTO()
+        {
+            Name = await LocalStorageHandler.GetUserNameAsync()
+        };
+        
+        if (userName.Name == string.Empty) await LocalStorageHandler.LogoutAsync();
+        else
+        {
+            var responseWithChats = await RequestHandler.GetAllUserChats(userName);
+            var allChatsResponse = await responseWithChats.Content.ReadFromJsonAsync<AllChatsResponse>(); //todo Deserialize
+            _chats = allChatsResponse.Result;
+        }
+        if (firstRender)
+        {
+            UserAccessVerification(await RequestHandler.GetAuthAsync("Login/GetAuthorize/"), () =>
+            {
+                
+                _status = AuthState.Authed;
+                StateHasChanged();
+            });
+        }
+    }
+    
+}

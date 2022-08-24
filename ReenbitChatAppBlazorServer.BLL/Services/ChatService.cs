@@ -1,14 +1,15 @@
 ﻿using Chat_BlazorServer.Controllers;
 using Microsoft.AspNetCore.Identity;
-using ReenbitChatAppBlazorServer.DB.Interfaces;
+using ReenbitChatAppBlazorServer.BLL.Services.Interfaces;
+using ReenbitChatAppBlazorServer.DAL.Interfaces;
+using ReenbitChatAppBlazorServer.DAL.Models;
 using ReenbitChatAppBlazorServer.Domain.DTOs;
 using ReenbitChatAppBlazorServer.Domain.Enums;
-using ReenbitChatAppBlazorServer.Domain.Models;
 using ReenbitChatAppBlazorServer.PL.Models;
 
 namespace ReenbitChatAppBlazorServer.BLL.Services;
 
-public class ChatService
+public class ChatService : IChatService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUnitOfWork _dbUnit;
@@ -54,28 +55,26 @@ public class ChatService
         }
     }
 
-    public IEnumerable<ChatDisplayDTO> GetAllUserChats(NameDTO userName)
+    public async Task<IEnumerable<ChatDisplayDTO>> GetAllUserChats(NameDTO userName)
     {
         try
         {
-            var user = _userManager.FindByNameAsync(userName.Name).Result;
+            var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName.Name);
 
             var list = _dbUnit.Chats.GetAllUserChats(user);
 
-            return list.Select(
-                item => new ChatDisplayDTO()
+            return list.Select(item => 
+                new ChatDisplayDTO()
                 {
-                    Id = item.Id,
-                    Name = item.Name,
+                    Id = item.Id, 
+                    Name = item.Name, 
                     Type = item.Type
                 }).ToList();
         }
         catch (Exception e)
         {
-            return Enumerable.Empty<ChatDisplayDTO>();
+            return new List<ChatDisplayDTO>();
         }
-       
-
     }
 
     public List<ChatDisplayDTO> FindChats(NameDTO chatname)
@@ -92,8 +91,8 @@ public class ChatService
 
     public async Task<bool> JoinUserToChat(JoinChatDTO model)
     {
-        var user = _userManager.FindByNameAsync(model.UserName).Result;
-        
+        var user = await _userManager.FindByNameAsync(model.UserName);
+
         try
         {
             _dbUnit.Chats.AddUserToChat(model.ChatId, user);

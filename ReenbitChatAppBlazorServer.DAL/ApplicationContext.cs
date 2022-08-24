@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using ReenbitChatAppBlazorServer.Domain.Models;
+using ReenbitChatAppBlazorServer.DAL.Models;
 
-namespace ReenbitChatAppBlazorServer.DB;
+namespace ReenbitChatAppBlazorServer.DAL;
 
 public class ApplicationContext : IdentityDbContext<ApplicationUser>
 {

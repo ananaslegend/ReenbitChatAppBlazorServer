@@ -1,5 +1,6 @@
-﻿using ReenbitChatAppBlazorServer.Domain.DTOs;
-using ReenbitChatAppBlazorServer.Domain.Models;
+﻿using ReenbitChatAppBlazorServer.DAL.Models;
+using ReenbitChatAppBlazorServer.Domain;
+using ReenbitChatAppBlazorServer.Domain.DTOs;
 
 namespace ReenbitChatAppBlazorServer.BLL.Abstractions;
 

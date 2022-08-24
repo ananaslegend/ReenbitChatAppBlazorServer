@@ -1,10 +1,10 @@
-﻿using ReenbitChatAppBlazorServer.Domain.Models;
+﻿using ReenbitChatAppBlazorServer.DAL.Models;
 
-namespace ReenbitChatAppBlazorServer.DB.Interfaces;
+namespace ReenbitChatAppBlazorServer.DAL.Interfaces;
 
 public interface IChatRepository : IGenericRepository<Chat>
 {
-    public IEnumerable<Chat> GetChatsByName(string chatName);
+    public IEnumerable<Chat> GetChatsByName(string? chatName);
     public void AddUserToChat(int chatId, ApplicationUser user);
     public IEnumerable<Chat> GetAllUserChats(ApplicationUser user);
 }
